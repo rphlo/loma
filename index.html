@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="Montako päivää on ensin loma?">
+    <meta name="keywords" content="Loma, Juhla, Päivämäärä, Laskuri">
+    <meta name="author" content="Raphaël Stefanini">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lomalaskuri</title>
+    <link href="https://fonts.googleapis.com/css?family=Londrina+Solid" rel="stylesheet">
+    <style type="text/css">
+      * {
+        font-weight: normal;
+      }
+      html {
+        font-size: 62.5%;
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        margin: 0;
+        background-color: #9f9f9f; 
+        font-size: 30px; font-size: 3rem;
+        font-family: "Londrina Solid", sans-serif;
+        letter-spacing: 0.1em;
+        color: #FFF;
+        text-shadow: 0 0 3em rgba(159, 65, 112, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        height: 100%;
+        width: 100%;
+      }
+      .workday{
+        background: url('work.jpg'); 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
+      .holiday{
+        background: url('holiday.jpg'); 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body>  
+    <h1 id="mainText"></h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js" integrity="sha384-8SI662MiMZn6eppgHSTHOne5FhCD3QYAv8U9DPvf5PhVa4F/zPm6jxrhJSNcc0SJ" crossorigin="anonymous"></script>
+<script type="text/javascript">
+var JANUARY = 0;
+var FEBRUARY = 1;
+var MARCH = 2;
+var APRIL = 3;
+var MAY = 4;
+var JUNE = 5;
+var JULY = 6;
+var AUGUST = 7;
+var SEPTEMBER = 8;
+var OCTOBER = 9;
+var NOVEMBER = 10;
+var DECEMBER = 11;
+
+Array.prototype.getUnique = function(){
+   var u = {}, a = [];
+   for(var i = 0, l = this.length; i < l; ++i){
+      if(u.hasOwnProperty(this[i])) {
+         continue;
+      }
+      a.push(this[i]);
+      u[this[i]] = 1;
+   }
+   return a;
+}
+
+function getEasterForYear(year){
+    var a = year % 19;
+    var b = Math.floor(year / 100);
+    var c = year % 100;
+    var d = Math.floor(b / 4);
+    var e = b % 4;
+    var g = Math.floor((8 * b +13)/25);
+    var h = (19 * a + b - d - g + 15) % 30;
+    var j = Math.floor(c / 4);
+    var k = c % 4;
+    var m = (a + 11 * h) / 319;
+    var r = (2 * e + 2 * j - k - h + m + 32 ) % 7;
+    var month = Math.floor((h - m + r + 90)/25);
+    var day = Math.floor((h - m + r + month + 19) % 32);
+    return moment(new Date(year, month-1, day));
+}
+
+function getMidsummerForYear(year){
+    var date = moment(new Date(year, JUNE, 20));
+    return date.day(6);
+}
+
+function getAllSaintsForYear(year){
+    var date = moment(new Date(year, OCTOBER, 31));
+    return date.day(6);
+}
+
+function getFirstSaturdayForYear(year){
+    var date = moment(new Date(year, JANUARY, 1));
+    return date.day(6);
+}
+
+function getFirstSundayForYear(year){
+    var date = moment(new Date(year, JANUARY, 1));
+    return date.day(0);
+}
+
+function getHolidaysForYear(year){
+    var holidays = [
+        moment(new Date(year, JANUARY, 1)),
+        moment(new Date(year+1, JANUARY, 1)),
+        moment(new Date(year, JANUARY, 6)),
+        getEasterForYear(year),
+        getEasterForYear(year).add(-2, 'days'),
+        getEasterForYear(year).add(1, 'days'),
+        moment(new Date(year, MAY, 1)),
+        getEasterForYear(year).add(39, 'days'),
+        getEasterForYear(year).add(49, 'days'),
+        getMidsummerForYear(year),
+        getMidsummerForYear(year).add(-1, 'days'),
+        getAllSaintsForYear(year),
+        moment(new Date(year, DECEMBER, 6)),
+        moment(new Date(year, DECEMBER, 24)),
+        moment(new Date(year, DECEMBER, 25)),
+        moment(new Date(year, DECEMBER, 26))
+    ];
+    var date = getFirstSaturdayForYear(year);
+    while(date.year() == year){
+        holidays.push(date);
+        date = date.clone().days(13);
+    }
+    var date = getFirstSundayForYear(year);
+    while(date.year() == year){
+        holidays.push(date);
+        date = date.clone().days(7);
+    }
+    holidays = holidays.getUnique();
+    return holidays.sort(function(a, b){return a-b;});
+}
+
+function getNextHoliday(){
+    var today = moment().startOf('day');
+    var holidays = getHolidaysForYear(today.get('year'));
+    for(var i=0;i < holidays.length;i++){
+        if(holidays[i] >= today){
+            return holidays[i];
+        }
+    }
+    return;
+}
+
+function getDurationToNextHoliday(){
+    return moment.duration(getNextHoliday().diff(moment()));
+}
+
+function isTodayHoliday(){
+    var nextHoliday = getNextHoliday();
+    var today = moment().startOf('day')
+    if(today == nextHoliday){
+        return true;
+    }
+    return false;
+}
+
+function getMainText(){
+    var text = "";
+    if(isTodayHoliday()){
+        text = "Tänään on loma!!!";
+    }else{
+        moment.locale('fi')
+        text = "Ensi loma on "+getDurationToNextHoliday().humanize(true)+".";
+    }
+    return text;
+}
+
+function updateMainText() {
+    var myelement = document.getElementById("mainText");
+    myelement.innerHTML = getMainText();
+    var body = document.getElementsByTagName('body')[0].className = isTodayHoliday()?"holiday":"workday";
+}
+window.onload = updateMainText;
+setTimeout(updateMainText, 1e3);
+</script>
+  </body>
+</html>
