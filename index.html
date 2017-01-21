@@ -169,7 +169,7 @@ function getDurationToNextHoliday(){
 function isTodayHoliday(){
     var nextHoliday = getNextHoliday();
     var today = moment().startOf('day')
-    if(today == nextHoliday){
+    if(today.isSame(nextHoliday)){
         return true;
     }
     return false;
