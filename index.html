@@ -192,7 +192,7 @@ function updateMainText() {
     var body = document.getElementsByTagName('body')[0].className = isTodayHoliday()?"holiday":"workday";
 }
 window.onload = updateMainText;
-setTimeout(updateMainText, 1e3);
+setTimeInterval(updateMainText, 1e3);
 </script>
   </body>
 </html>
