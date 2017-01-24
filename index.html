@@ -188,8 +188,11 @@ function getMainText(){
 
 function updateMainText() {
     var myelement = document.getElementById("mainText");
-    myelement.innerHTML = getMainText();
-    var body = document.getElementsByTagName('body')[0].className = isTodayHoliday()?"holiday":"workday";
+    var new_text = getMainText();
+    if(new_text != myelement.innerHTML){
+        myelement.innerHTML = getMainText();
+        var body = document.getElementsByTagName('body')[0].className = isTodayHoliday()?"holiday":"workday";
+    }
 }
 window.onload = updateMainText;
 window.setInterval(updateMainText, 1e3);
