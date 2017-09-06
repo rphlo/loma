@@ -55,8 +55,9 @@
 
 <body>
   <h1 id="mainText"></h1>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js" integrity="sha384-8SI662MiMZn6eppgHSTHOne5FhCD3QYAv8U9DPvf5PhVa4F/zPm6jxrhJSNcc0SJ"
-    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"
+          integrity="sha384-8SI662MiMZn6eppgHSTHOne5FhCD3QYAv8U9DPvf5PhVa4F/zPm6jxrhJSNcc0SJ"
+          crossorigin="anonymous"></script>
   <script type="text/javascript">
   var JANUARY = 0;
   var FEBRUARY = 1;
@@ -165,13 +166,18 @@
   }
 
   function getDurationToNextHoliday() {
-    return moment.duration(getNextHoliday().diff(moment()));
+    var endOfWork = getNextHoliday().add(-1, 'day').hours(16);
+    return moment.duration(endOfWork.diff(moment()));
   }
 
-  function isTodayHoliday() {
+  function isNowHoliday() {
     var nextHoliday = getNextHoliday();
-    var today = moment().startOf('day')
+    var today = moment().startOf('day');
+    var tomorrow = moment().add(1,'days').startOf('day');
     if (today.isSame(nextHoliday)) {
+      return true;
+    }
+    if(tomorrow.isSame(nextHoliday) && moment().hour() >= 16){
       return true;
     }
     return false;
@@ -179,8 +185,8 @@
 
   function getMainText() {
     var text = "";
-    if (isTodayHoliday()) {
-      text = "Tänään on loma!!!";
+    if (isNowHoliday()) {
+      text = "Nyt on loma!!!";
     } else {
       moment.locale('fi')
       text = "Seuraava loma on " + getDurationToNextHoliday().humanize(true) + ".";
@@ -193,7 +199,7 @@
     var new_text = getMainText();
     if (new_text != myelement.innerHTML) {
       myelement.innerHTML = getMainText();
-      var body = document.getElementsByTagName('body')[0].className = isTodayHoliday() ? "holiday" : "workday";
+      var body = document.getElementsByTagName('body')[0].className = isNowHoliday() ? "holiday" : "workday";
     }
   }
   window.onload = updateMainText;
