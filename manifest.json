@@ -1,5 +1,6 @@
 {
     "name": "Lomalaskuri",
+    "short_name": "Lomalaskuri",
     "icons": [
         {
             "src": "/loma/icons/android-chrome-192x192.png",
