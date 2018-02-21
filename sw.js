@@ -1,7 +1,7 @@
 self.addEventListener('install', function(e){
  var timeStamp = Date.now();
  e.waitUntil(
-   caches.open('lomalaskuri').then(function(cache){
+   caches.open('loma-ajastin').then(function(cache){
      return cache.addAll([
        './',
        './index.html?ts='+timeStamp,
