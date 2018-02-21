@@ -3,10 +3,10 @@ self.addEventListener('install', function(e){
  e.waitUntil(
    caches.open('loma-ajastin').then(function(cache){
      return cache.addAll([
-       './',
-       './index.html?ts='+timeStamp,
-       './holiday.jpg?ts='+timeStamp,
-       './work.jpg?ts='+timeStamp
+       '/',
+       'index.html?ts='+timeStamp,
+       'holiday.jpg?ts='+timeStamp,
+       'work.jpg?ts='+timeStamp
      ]).then(function(){self.skipWaiting()});
    })
  );
