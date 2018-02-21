@@ -65,7 +65,10 @@
 </head>
 
 <body>
-  <h1 id="mainText">Ota Javascript käyttöön tietääksesi, milloin seuraava loma on.</h1>
+  <h1 id="mainText">
+    <script>document.write("Loading")</script>
+    <noscript>Ota Javascript käyttöön tietääksesi, milloin seuraava loma on.</noscript>
+  </h1>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js"
           integrity="sha384-8SI662MiMZn6eppgHSTHOne5FhCD3QYAv8U9DPvf5PhVa4F/zPm6jxrhJSNcc0SJ"
           crossorigin="anonymous"></script>
