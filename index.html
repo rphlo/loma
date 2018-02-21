@@ -156,7 +156,7 @@
       holidays.push(date);
       date = date.clone().days(13);
     }
-    var date = getFirstSundayForYear(year);
+    date = getFirstSundayForYear(year);
     while (date.year() == year) {
       holidays.push(date);
       date = date.clone().days(7);
