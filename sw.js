@@ -1,7 +1,8 @@
+var VERSION_NAME = 'loma_v2018031100'
 self.addEventListener('install', function(e){
  var timeStamp = Date.now();
  e.waitUntil(
-   caches.open('loma-ajastin').then(function(cache){
+   caches.open(VERSION_NAME).then(function(cache){
      return cache.addAll([
        '/',
        'index.html?ts='+timeStamp,
@@ -18,7 +19,7 @@ self.addEventListener('activate', function(event){
 
 self.addEventListener('fetch', function(event){
   event.respondWith(
-    caches.match(event.request, {ignoreSearch: true}).then(function(response){
+    caches.match(event.request, {cacheName: VERSION_NAME, ignoreSearch: true}).then(function(response){
       return response || fetch(event.request);
     })
   );

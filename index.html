@@ -127,12 +127,14 @@
 
   function getFirstSaturdayForYear(year) {
     var date = moment(new Date(year, JANUARY, 1));
-    return date.day(6);
+    var weekday = date.isoWeekday()
+    return date.add((13-weekday)%7, 'day')
   }
 
   function getFirstSundayForYear(year) {
     var date = moment(new Date(year, JANUARY, 1));
-    return date.day(0);
+    var weekday = date.isoWeekday()
+    return date.add((7-weekday)%7, 'day')
   }
 
   function getHolidaysForYear(year) {
