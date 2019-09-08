@@ -1,3 +1,5 @@
 # Loma-Ajastin
-Countdown to next holiday for people working in Finland.  
-https://loma-ajastin.fi/
+
+Countdown to next finnish holiday day for 8am to 16pm workers in Finland.   
+
+Visisble on https://loma-ajastin.fi/
